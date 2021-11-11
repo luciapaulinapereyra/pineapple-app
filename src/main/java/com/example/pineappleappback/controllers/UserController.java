@@ -25,21 +25,23 @@ public class UserController {
     UserService userService;
 
     @GetMapping()
-    public ResponseEntity<ArrayList<UserModel>> getUsers() {
-        return this.userService.getUsers();
-        }
+     public ResponseEntity<Object> getUsers() {
+         return this.userService.getUsers();
+    }
+    
+        
     @PostMapping() 
-    public ResponseEntity<UserModel> createUser(@RequestBody UserModel user) {
+    public ResponseEntity<Object> createUser(@RequestBody UserModel user) {
         return this.userService.createUser(user);
     }
  
     @PutMapping(path="/{id}")
-    public ResponseEntity<UserModel>modifyUser(@PathVariable("id") Long id, @RequestBody UserModel userRequest) {
+    public ResponseEntity<Object>modifyUser(@PathVariable("id") Long id, @RequestBody UserModel userRequest) {
        return this.userService.modifyUser(id, userRequest);
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<HttpStatus>  deleteById(@PathVariable("id") Long id) {
+    public ResponseEntity<Object>  deleteById(@PathVariable("id") Long id) {
         return this.userService.deleteUser(id);
 
     }
