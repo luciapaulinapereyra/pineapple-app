@@ -3,6 +3,7 @@ package com.example.pineappleappback.services;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import com.example.pineappleappback.dto.UserListDTO;
 import com.example.pineappleappback.models.UserModel;
 import com.example.pineappleappback.repositories.UserRepository;
 import com.example.pineappleappback.response.ResponseHandler;
@@ -16,20 +17,31 @@ import org.springframework.stereotype.Service;
 public class UserService {
    @Autowired
    UserRepository userRepository;
+   UserModel userModel;
 
    public ResponseEntity<Object> getUsers() {    //para obtener todos los usuarios
-        try {
-              ArrayList<UserModel> users= new ArrayList <UserModel>();
-            userRepository.findAll().forEach(users::add);
-             if (users.isEmpty()) {
-                  return ResponseHandler.generateResponse("The list is empty", HttpStatus.NOT_FOUND, null,false);
-             }
-             return ResponseHandler.generateResponse("", HttpStatus.OK, users,false);
-        } catch (Exception e) {
-          return ResponseHandler.generateResponse("Error", HttpStatus.INTERNAL_SERVER_ERROR, null,true);
-        }            
-        
-   }
+     try {
+           ArrayList<UserModel> users= new ArrayList <UserModel>();
+           ArrayList<UserListDTO> usersDTO = new ArrayList<>();
+           userRepository.findAll().forEach(users::add);
+           
+           for( UserModel user:users) {
+                usersDTO.add(new UserListDTO(user));
+           }
+          
+         
+         
+          if (users.isEmpty()) {
+               return ResponseHandler.generateResponse("The list is empty", HttpStatus.NOT_FOUND, null,false);
+          }
+          
+          return ResponseHandler.generateResponse("", HttpStatus.OK, usersDTO, false);
+     } catch (Exception e) {
+       return ResponseHandler.generateResponse("Error", HttpStatus.INTERNAL_SERVER_ERROR, null,true);
+     }            
+     
+}
+
 
    public ResponseEntity<Object> createUser(UserModel user) {  //para guardar el usuario
         UserModel newUser = new UserModel();
@@ -39,6 +51,7 @@ public class UserService {
         newUser.setPassword(user.getPassword());
         newUser.setUsername(user.getUsername());
         newUser.setRole(user.getRole());
+        newUser.setCreatedDateToNow();
         try { 
         UserModel savedUser = userRepository.save(newUser);
         return ResponseHandler.generateResponse("User created!",HttpStatus.CREATED,savedUser,false);
@@ -61,18 +74,17 @@ public class UserService {
    public ResponseEntity<Object> modifyUser(Long id,UserModel userRequest) {
         Optional<UserModel> user = userRepository.findById(id);
 
-        if(user.isPresent()) {
-             UserModel userm = user.get();
-             userm.setName(userRequest.getName());
-             userm.setEmail(userRequest.getEmail());
-             userm.setLastName(userRequest.getLastName());
-             userm.setPassword(userRequest.getPassword());
-             userm.setUsername(userRequest.getUsername());
-             userm.setRole(userRequest.getRole());
+        if(!user.isPresent()) return ResponseHandler.generateResponse("Error, user not found",HttpStatus.NOT_FOUND,null,true);
 
-             UserModel modifiedUser = userRepository.save(userm);
-             return ResponseHandler.generateResponse("User updated!",HttpStatus.OK,modifiedUser,false);
-        }
-        return ResponseHandler.generateResponse("Error, user not found",HttpStatus.NOT_FOUND,null,true);
+          UserModel userm = user.get();
+          if (userRequest.getName() != null) userm.setName(userRequest.getName());
+          if (userRequest.getEmail() != null) userm.setEmail(userRequest.getEmail());
+          if (userRequest.getLastName() != null) userm.setLastName(userRequest.getLastName());
+          if (userRequest.getPassword() != null) userm.setPassword(userRequest.getPassword());
+          if (userRequest.getUsername() != null) userm.setUsername(userRequest.getUsername());
+          if (userRequest.getRole() != null) userm.setRole(userRequest.getRole());
+
+          UserModel modifiedUser = userRepository.save(userm);
+          return ResponseHandler.generateResponse("User updated!",HttpStatus.OK,modifiedUser,false);
    }
 }
