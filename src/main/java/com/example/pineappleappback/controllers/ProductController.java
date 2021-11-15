@@ -31,6 +31,11 @@ public class ProductController {
         return this.productService.findByName(name);
     }
 
+    @GetMapping(path = "/ordered")
+    public ResponseEntity<Object> getOrderedList() {
+        return this.productService.getOrderedList();
+    }
+
     @PostMapping()
     public ResponseEntity<Object> createProduct(@RequestBody ProductModel product) {
         return this.productService.createProduct(product);

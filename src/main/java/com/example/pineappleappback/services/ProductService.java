@@ -1,6 +1,7 @@
 package com.example.pineappleappback.services;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Optional;
 
 import com.example.pineappleappback.models.ProductModel;
@@ -98,6 +99,20 @@ public class ProductService {
             return ResponseHandler.generateResponse("Error,product not found", HttpStatus.NOT_FOUND, null, true);
         }
 
+    }
+
+    public ResponseEntity<Object> getOrderedList() {
+        try {
+            ArrayList<ProductModel> products = new ArrayList<ProductModel>();
+            productRepository.findAll().forEach(products::add);
+            Collections.sort(products, (ProductModel p1, ProductModel p2) -> {
+                return p1.getName().compareToIgnoreCase(p2.getName());
+            });
+            return ResponseHandler.generateResponse("", HttpStatus.OK, products, false);
+        } catch (Exception err) {
+
+            return ResponseHandler.generateResponse("Error", HttpStatus.INTERNAL_SERVER_ERROR, null, true);
+        }
     }
 
 }
