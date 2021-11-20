@@ -4,8 +4,6 @@ import java.sql.Timestamp;
 
 import java.util.Date;
 
-//import java.util.Date;
-
 import javax.persistence.*;
 
 @Entity
@@ -16,9 +14,6 @@ public class UserModel {
     @Column(unique = true, nullable = false)
     private Long id;
 
-    // @Column(name = "updated_at")
-    // private Date modifiedDate;
-
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
     Date createdDate;
@@ -28,7 +23,10 @@ public class UserModel {
     private String email;
     private String name;
     private String lastName;
-    private Integer role;
+
+    @ManyToOne()
+    @JoinColumn(name = "role_id")
+    private RoleModel role;
 
     public Date getCreatedDate() {
         return this.createdDate;
@@ -70,32 +68,6 @@ public class UserModel {
         return email;
     }
 
-    // @PrePersist
-    // protected void prePersist() {
-    // if (this.creationDate == null) creationDate = new Date();
-    // if (this.modifiedDate == null) modifiedDate = new Date();
-    // }
-
-    // @PreUpdate
-    // protected void preUpdate() {
-    // this.modifiedDate = new Date();
-    // }
-
-    // public Date getModifiedDate() {
-    // return modifiedDate;
-    // }
-
-    // public Date getCreationDate() {
-    // return creationDate;
-    // }
-
-    // public void setCreationDate(Date creationDate) {
-    // this.creationDate=creationDate;
-    // }
-    // public void setModifiedDate(Date modifiedDate) {
-    // this.modifiedDate=modifiedDate;
-    // }
-
     public void setEmail(String email) {
         this.email = email;
     }
@@ -116,12 +88,12 @@ public class UserModel {
         this.lastName = lastName;
     }
 
-    public Integer getRole() {
-        return role;
+    public void setRole(RoleModel role) {
+        this.role = role;
     }
 
-    public void setRole(Integer role) {
-        this.role = role;
+    public RoleModel getRole() {
+        return role;
     }
 
     public <List> UserModel getInformation(UserModel user) {
@@ -130,5 +102,9 @@ public class UserModel {
         user.id = this.id;
         return user;
     }
+
+    // public void addRole(RoleModel rol) {
+    // this.roles.add(rol);
+    // }
 
 }
