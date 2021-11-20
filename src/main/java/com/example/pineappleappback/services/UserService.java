@@ -101,6 +101,13 @@ public class UserService {
                userm.setPassword(userRequest.getPassword());
           if (userRequest.getUsername() != null)
                userm.setUsername(userRequest.getUsername());
+          if (userRequest.getRole() != null) {
+               Optional<RoleModel> existingRole = roleRepository.findById(userRequest.getRole().getId());
+               if (!existingRole.isPresent())
+                    return ResponseHandler.generateResponse("The role doesn't exists", HttpStatus.BAD_REQUEST, null,
+                              true);
+               userm.setRole(existingRole.get());
+          }
 
           UserModel modifiedUser = userRepository.save(userm);
           return ResponseHandler.generateResponse("User updated!", HttpStatus.OK, modifiedUser, false);
