@@ -33,6 +33,11 @@ public class UserController {
         return this.userService.createUser(user);
     }
 
+    @PostMapping(path = "/login")
+    public ResponseEntity<Object> login(@RequestBody UserModel userRequest) {
+        return this.userService.searchByUserPassword(userRequest.getUsername(), userRequest.getPassword());
+    }
+
     @PutMapping(path = "/{id}")
     public ResponseEntity<Object> modifyUser(@PathVariable("id") Long id, @RequestBody UserModel userRequest) {
         return this.userService.modifyUser(id, userRequest);

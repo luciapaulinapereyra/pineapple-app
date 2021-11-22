@@ -23,11 +23,29 @@ public class UserService {
      private UserRepository userRepository;
      @Autowired
      private RoleRepository roleRepository;
-     
+
 
     static PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
      public static String encriptarBCrypt(String password) {
           return  passwordEncoder.encode(password);
+     }
+
+     public ResponseEntity<Object> searchByUserPassword(String user, String password) { //para loguearse
+
+        try {
+             Optional<UserModel> u= userRepository.findByUsername(user);
+
+            if(passwordEncoder.matches(password,u.get().getPassword())){
+                 UserListDTO userLogged = new UserListDTO(u.get());
+                 return ResponseHandler.generateResponse("", HttpStatus.OK, userLogged, false);
+            }else{
+               return ResponseHandler.generateResponse("Failed", HttpStatus.INTERNAL_SERVER_ERROR, null, true);
+            }
+        }catch (Exception e){
+            
+          return ResponseHandler.generateResponse("Failed", HttpStatus.INTERNAL_SERVER_ERROR, null, true);
+        }
+
      }
      
      public ResponseEntity<Object> getUsers() { // para obtener todos los usuarios
