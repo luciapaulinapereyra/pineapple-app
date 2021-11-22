@@ -11,7 +11,7 @@ public class UserListDTO {
     private Long id;
     private Date createdDate;
     private String name;
-    private String lastname;
+    private String lastName;
     private String email;
     private RoleModel role;
     
@@ -20,7 +20,7 @@ public class UserListDTO {
         this.id = user.getId();
         this.createdDate = user.getCreatedDate();
         this.name = user.getName();
-        this.lastname = user.getLastName();
+        this.lastName = user.getLastName();
         this.email = user.getEmail();
         this.role = user.getRole();
 
@@ -59,11 +59,11 @@ public class UserListDTO {
         this.name = name;
     }   
 
-    public String getLastname() {
-        return lastname;
+    public String getLastName() {
+        return lastName;
     }
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }   
     public String getEmail() {
         return email;
