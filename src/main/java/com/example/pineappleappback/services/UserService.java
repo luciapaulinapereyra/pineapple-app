@@ -93,7 +93,8 @@ public class UserService {
                newUser.setCreatedDateToNow();
                newUser.setRole(existingRole.get());
                UserModel savedUser = userRepository.save(newUser);
-               return ResponseHandler.generateResponse("User created!", HttpStatus.CREATED, savedUser, false);
+               UserListDTO userResponse = new UserListDTO(savedUser);
+               return ResponseHandler.generateResponse("User created!", HttpStatus.CREATED, userResponse, false);
           } catch (Exception err) {
                return ResponseHandler.generateResponse("Error", HttpStatus.INTERNAL_SERVER_ERROR, null, true);
           }
@@ -124,7 +125,7 @@ public class UserService {
           if (userRequest.getLastName() != null)
                userm.setLastName(userRequest.getLastName());
           if (userRequest.getPassword() != null)
-               userm.setPassword(userRequest.getPassword());
+               userm.setPassword(encriptarBCrypt(userRequest.getPassword()));
           if (userRequest.getUsername() != null)
                userm.setUsername(userRequest.getUsername());
           if (userRequest.getRole() != null) {
@@ -136,6 +137,7 @@ public class UserService {
           }
 
           UserModel modifiedUser = userRepository.save(userm);
-          return ResponseHandler.generateResponse("User updated!", HttpStatus.OK, modifiedUser, false);
+          UserListDTO userResponse = new UserListDTO(modifiedUser);
+          return ResponseHandler.generateResponse("User updated!", HttpStatus.OK, userResponse, false);
      }
 }
