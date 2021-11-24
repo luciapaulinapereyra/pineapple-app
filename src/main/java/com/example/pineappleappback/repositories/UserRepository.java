@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import org.springframework.stereotype.Repository;
 
+//This is the user repository. This class extends the JPA repository to be able to use its functionalities
 @Repository
 public interface UserRepository extends JpaRepository<UserModel, Long> {
     public Optional<UserModel> findByUsername(String username);

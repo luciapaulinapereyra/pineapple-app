@@ -2,6 +2,7 @@ package com.example.pineappleappback.models;
 
 import javax.persistence.*;
 
+//This is de product model. Here we see what type of information of product we are going to handle.
 @Entity
 @Table(name = "products")
 public class ProductModel {

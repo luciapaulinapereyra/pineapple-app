@@ -6,6 +6,7 @@ import java.util.Date;
 
 import javax.persistence.*;
 
+//This is de user model. Here we see what type of information of user we are going to handle.
 @Entity
 @Table(name = "users")
 public class UserModel {
@@ -24,10 +25,11 @@ public class UserModel {
     private String name;
     private String lastName;
 
-    @ManyToOne()
+    @ManyToOne() // Many users to one role
     @JoinColumn(name = "role_id")
     private RoleModel role;
 
+    // Setters & Getters
     public Date getCreatedDate() {
         return this.createdDate;
     }
@@ -102,9 +104,5 @@ public class UserModel {
         user.id = this.id;
         return user;
     }
-
-    // public void addRole(RoleModel rol) {
-    // this.roles.add(rol);
-    // }
 
 }

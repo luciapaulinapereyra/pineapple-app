@@ -6,6 +6,7 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+//This is de role model. This connects to the user table to assign a role to each user
 @Entity
 @Table(name = "roles")
 public class RoleModel {
@@ -17,7 +18,7 @@ public class RoleModel {
     private String name;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true) // One role to many users
     private List<UserModel> users;
 
     public RoleModel() {
@@ -27,6 +28,8 @@ public class RoleModel {
     public RoleModel(String name) {
         this.name = name;
     }
+
+    // Setters & Getters
 
     public Long getId() {
         return id;
