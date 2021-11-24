@@ -102,7 +102,7 @@ public class UserService {
 
      }
      
-     public ResponseEntity<Object> getByEmail(String email) { // para cambiar contraseña
+     public ResponseEntity<Object> getByEmail(String email) { // To get info about a determinated user by its email
     	
     	 try {
               Optional<UserModel> existingUser = userRepository.findByEmail(email);
