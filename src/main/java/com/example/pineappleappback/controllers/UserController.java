@@ -5,6 +5,7 @@ import com.example.pineappleappback.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
 
+//This is the controller of users when where http requests of users are received
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/users")
@@ -24,26 +26,26 @@ public class UserController {
     UserService userService;
 
     @GetMapping()
-    public ResponseEntity<Object> getUsers() {
+    public ResponseEntity<Object> getUsers() { // To get the users
         return this.userService.getUsers();
     }
 
     @PostMapping()
-    public ResponseEntity<Object> createUser(@RequestBody UserModel user) {
+    public ResponseEntity<Object> createUser(@RequestBody UserModel user) { // To create a user
         return this.userService.createUser(user);
     }
 
-    @PostMapping(path = "/login")
+    @PostMapping(path = "/login") // To get username and password to the login
     public ResponseEntity<Object> login(@RequestBody UserModel userRequest) {
         return this.userService.searchByUserPassword(userRequest.getUsername(), userRequest.getPassword());
     }
 
-    @PutMapping(path = "/{id}")
+    @PutMapping(path = "/{id}") // To edit a user
     public ResponseEntity<Object> modifyUser(@PathVariable("id") Long id, @RequestBody UserModel userRequest) {
         return this.userService.modifyUser(id, userRequest);
     }
 
-    @DeleteMapping(path = "/{id}")
+    @DeleteMapping(path = "/{id}") // To delete a user
     public ResponseEntity<Object> deleteById(@PathVariable("id") Long id) {
         return this.userService.deleteUser(id);
 

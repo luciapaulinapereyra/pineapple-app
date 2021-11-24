@@ -1,0 +1,1 @@
+TODO: implement application security with jwt, I couldn't do it because of time and difficulty.

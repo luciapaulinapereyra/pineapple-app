@@ -17,38 +17,39 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-@Service // le indico que es el servicio
+//This is the user service. Here all the logic of business is implemented.
+@Service
 public class UserService {
      @Autowired
      private UserRepository userRepository;
      @Autowired
      private RoleRepository roleRepository;
 
+     static PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    static PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-     public static String encriptarBCrypt(String password) {
-          return  passwordEncoder.encode(password);
+     public static String encriptarBCrypt(String password) { // Encrypt the password
+          return passwordEncoder.encode(password);
      }
 
-     public ResponseEntity<Object> searchByUserPassword(String user, String password) { //para loguearse
+     public ResponseEntity<Object> searchByUserPassword(String user, String password) { // to login
 
-        try {
-             Optional<UserModel> u= userRepository.findByUsername(user);
+          try {
+               Optional<UserModel> u = userRepository.findByUsername(user);
 
-            if(passwordEncoder.matches(password,u.get().getPassword())){
-                 UserListDTO userLogged = new UserListDTO(u.get());
-                 return ResponseHandler.generateResponse("", HttpStatus.OK, userLogged, false);
-            }else{
+               if (passwordEncoder.matches(password, u.get().getPassword())) {
+                    UserListDTO userLogged = new UserListDTO(u.get());
+                    return ResponseHandler.generateResponse("", HttpStatus.OK, userLogged, false);
+               } else {
+                    return ResponseHandler.generateResponse("Failed", HttpStatus.INTERNAL_SERVER_ERROR, null, true);
+               }
+          } catch (Exception e) {
+
                return ResponseHandler.generateResponse("Failed", HttpStatus.INTERNAL_SERVER_ERROR, null, true);
-            }
-        }catch (Exception e){
-            
-          return ResponseHandler.generateResponse("Failed", HttpStatus.INTERNAL_SERVER_ERROR, null, true);
-        }
+          }
 
      }
-     
-     public ResponseEntity<Object> getUsers() { // para obtener todos los usuarios
+
+     public ResponseEntity<Object> getUsers() { // to get all users
           try {
                ArrayList<UserModel> users = new ArrayList<UserModel>();
                ArrayList<UserListDTO> usersDTO = new ArrayList<>();
@@ -69,7 +70,7 @@ public class UserService {
 
      }
 
-     public ResponseEntity<Object> createUser(UserModel user) { // para guardar el usuario
+     public ResponseEntity<Object> createUser(UserModel user) { // to create and save a user
           try {
                Optional<UserModel> existingUser = userRepository.findByUsername(user.getUsername());
                if (existingUser.isPresent())
@@ -101,7 +102,7 @@ public class UserService {
 
      }
 
-     public ResponseEntity<Object> deleteUser(Long id) {
+     public ResponseEntity<Object> deleteUser(Long id) { // to delete a user
           try {
                userRepository.deleteById(id);
 
@@ -111,7 +112,7 @@ public class UserService {
           }
      }
 
-     public ResponseEntity<Object> modifyUser(Long id, UserModel userRequest) {
+     public ResponseEntity<Object> modifyUser(Long id, UserModel userRequest) { // to edit a user
           Optional<UserModel> user = userRepository.findById(id);
 
           if (!user.isPresent())

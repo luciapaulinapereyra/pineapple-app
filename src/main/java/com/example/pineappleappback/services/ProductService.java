@@ -13,12 +13,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+//This is the product service. Here all the logic of business is implemented.
 @Service
 public class ProductService {
     @Autowired
     ProductRepository productRepository;
 
-    public ResponseEntity<Object> getProducts() {
+    public ResponseEntity<Object> getProducts() { // Get all products
         try {
             ArrayList<ProductModel> products = new ArrayList<ProductModel>();
             productRepository.findAll().forEach(products::add);
@@ -34,7 +35,7 @@ public class ProductService {
         }
     }
 
-    public ResponseEntity<Object> findByName(String name) {
+    public ResponseEntity<Object> findByName(String name) { // To find by name
         try {
             ArrayList<ProductModel> products = new ArrayList<ProductModel>();
             productRepository.findByName(name).forEach(products::add);
@@ -48,7 +49,7 @@ public class ProductService {
         }
     }
 
-    public ResponseEntity<Object> createProduct(ProductModel product) {
+    public ResponseEntity<Object> createProduct(ProductModel product) { // Create and save a product
 
         ProductModel newProduct = new ProductModel();
         newProduct.setName(product.getName());
@@ -67,7 +68,7 @@ public class ProductService {
 
     }
 
-    public ResponseEntity<Object> editProduct(Long id, ProductModel productRequest) {
+    public ResponseEntity<Object> editProduct(Long id, ProductModel productRequest) { // Edit a product
         Optional<ProductModel> product = productRepository.findById(id);
 
         if (!product.isPresent())
@@ -90,7 +91,7 @@ public class ProductService {
         return ResponseHandler.generateResponse("User updated!", HttpStatus.OK, editProduct, false);
     }
 
-    public ResponseEntity<Object> deleteProduct(Long id) {
+    public ResponseEntity<Object> deleteProduct(Long id) { // Delete a product
         try {
             productRepository.deleteById(id);
 
@@ -101,7 +102,7 @@ public class ProductService {
 
     }
 
-    public ResponseEntity<Object> getOrderedList() {
+    public ResponseEntity<Object> getOrderedList() { // Get list in order
         try {
             ArrayList<ProductModel> products = new ArrayList<ProductModel>();
             productRepository.findAll().forEach(products::add);
