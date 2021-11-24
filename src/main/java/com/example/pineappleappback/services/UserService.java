@@ -100,6 +100,22 @@ public class UserService {
           }
 
      }
+     
+     public ResponseEntity<Object> getByEmail(String email) { // para cambiar contraseña
+    	
+    	 try {
+              Optional<UserModel> existingUser = userRepository.findByEmail(email);
+              if (!existingUser.isPresent())
+                   return ResponseHandler.generateResponse("El correo no pertenece a ningun usuario", HttpStatus.BAD_REQUEST, null,
+                             true);
+              
+              return ResponseHandler.generateResponse("", HttpStatus.OK, existingUser, false);
+         } catch (Exception err) {
+              return ResponseHandler.generateResponse("Error", HttpStatus.INTERNAL_SERVER_ERROR, null, true);
+              
+         }
+
+    }
 
      public ResponseEntity<Object> deleteUser(Long id) {
           try {
