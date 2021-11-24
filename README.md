@@ -16,9 +16,11 @@ El backend fue desarrollado con SpringBoot.
 | ------ | ------ |
 | Backend | https://github.com/luciapaulinapereyra/pineapple-app-back |
 | Frontend |https://github.com/ale-drian/pineapple-app-front |
-| API | https://heroku |
-| Base de Datos | https://holi |
-| Applicacion WEB | https://heroku |
+| API | https://ppap-app-api.herokuapp.com/api/ |
+| API Users| https://ppap-app-api.herokuapp.com/api/users |
+| API Products| https://ppap-app-api.herokuapp.com/api/products |
+| API Login| https://ppap-app-api.herokuapp.com/api/login |
+| Applicacion WEB | https://ppap-app.herokuapp.com/ |
 
 
 
